@@ -14,19 +14,19 @@ class Connect extends \DdvPhp\QQ\Connect\QC
   		return;
   	}
   	if (!empty($config['appid'])) {
-  		$this->setAppId($appid);
+  		$this->setAppId($config['appid']);
   	}
   	if (!empty($config['scope'])) {
-  		$this->setScope($scope);
+  		$this->setScope($config['scope']);
   	}
   	if (!empty($config['openid'])) {
-  		$this->setOpenid($openid);
+  		$this->setOpenid($config['openid']);
   	}
   	if (!empty($config['callback'])) {
-  		$this->setCallbackUrl($callback);
+  		$this->setCallbackUrl($config['callback']);
   	}
   	if (!empty($config['access_token'])) {
-  		$this->setAccessToken($access_token);
+  		$this->setAccessToken($config['access_token']);
   	}
   }
 }
