@@ -27,7 +27,8 @@ class ErrorCase{
      */
     public function showError($code, $description = '$'){
         $description = $description == "$" && isset($this->errorMsg[$code]) ? $this->errorMsg[$code] : $description;
-        throw new Exception($description, $code);
+        $description .= '['.$code.']';
+        throw new Exception($description, 400);
     }
     public function showTips($code, $description = '$'){
     }

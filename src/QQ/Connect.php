@@ -16,6 +16,9 @@ class Connect extends \DdvPhp\QQ\Connect\QC
   	if (!empty($config['appid'])) {
   		$this->setAppId($config['appid']);
   	}
+  	if (!empty($config['appkey'])) {
+  		$this->setAppKey($config['appkey']);
+  	}
   	if (!empty($config['scope'])) {
   		$this->setScope($config['scope']);
   	}

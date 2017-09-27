@@ -32,6 +32,9 @@ class Oauth{
     public function setAppId($appid){
         $this->appid = $appid;
     }
+    public function setAppKey($appkey){
+        $this->appkey = $appkey;
+    }
     public function setScope($scope){
         $this->scope = $scope;
     }
@@ -44,12 +47,12 @@ class Oauth{
     public function setCallbackUrl($callback){
         $this->callback = $callback;
     }
-    public function qq_login($scope, $callback = null, $appid = null){
+    public function qq_login($scope, $callback = null, $state = '', $appid = null){
         //-------构造请求参数列表
         $keysArr = array(
             "response_type" => "code",
             "client_id" => empty($appid) ? $this->appid : $appid,
-            "redirect_uri" => empty($callback) ? $this->callback : $callback,
+            "redirect_uri" => urlencode(empty($callback) ? $this->callback : $callback),
             "scope" => empty($scope) ? $this->scope : $scope,
             "state" => $state,
         );
@@ -93,7 +96,7 @@ class Oauth{
 
     }
 
-    public function get_openid($access_token = null){
+    public function get_openid($access_token = null, $isOpenid = true){
 
         //-------请求参数列表
         $keysArr = array(
@@ -117,7 +120,11 @@ class Oauth{
         }
         $this->openid = $user->openid;
 
-        return $user->openid;
+        if ($isOpenid){
+            return $user->openid;
+        }else{
+            return $user;
+        }
 
     }
 }
