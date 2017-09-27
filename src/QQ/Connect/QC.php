@@ -10,7 +10,7 @@ namespace DdvPhp\QQ\Connect;
  * @brief QC类，api外部对象，调用接口全部依赖于此对象
  * */
 class QC extends Oauth{
-    private $kesArr, $APIMap;
+    protected $APIMap;
 
     /**
      * _construct
@@ -18,11 +18,9 @@ class QC extends Oauth{
      * 构造方法
      * @access public 
      * @since 5
-     * @param string $access_token  access_token value
-     * @param string $openid        openid value
      * @return Object QC
      */
-    public function __construct($access_token = "", $openid = "", $appid = null){
+    public function __construct(){
         parent::__construct();
 
         //初始化APIMap
