@@ -22,23 +22,8 @@ class QC extends Oauth{
      * @param string $openid        openid value
      * @return Object QC
      */
-    public function __construct($access_token = "", $openid = ""){
+    public function __construct($access_token = "", $openid = "", $appid = null){
         parent::__construct();
-
-        //如果access_token和openid为空，则从session里去取，适用于demo展示情形
-        if($access_token === "" || $openid === ""){
-            $this->keysArr = array(
-                "oauth_consumer_key" => (int)$this->recorder->readInc("appid"),
-                "access_token" => $this->recorder->read("access_token"),
-                "openid" => $this->recorder->read("openid")
-            );
-        }else{
-            $this->keysArr = array(
-                "oauth_consumer_key" => (int)$this->recorder->readInc("appid"),
-                "access_token" => $access_token,
-                "openid" => $openid
-            );
-        }
 
         //初始化APIMap
         /*
@@ -151,7 +136,11 @@ class QC extends Oauth{
     //调用相应api
     private function _applyAPI($arr, $argsList, $baseUrl, $method){
         $pre = "#";
-        $keysArr = $this->keysArr;
+        $keysArr = array(
+            "oauth_consumer_key" => $this->appid,
+            "access_token" => $this->access_token,
+            "openid" => $this->openid
+        );
 
         $optionArgList = array();//一些多项选填参数必选一的情形
         foreach($argsList as $key => $val){
@@ -232,7 +221,7 @@ class QC extends Oauth{
     public function __call($name,$arg){
         //如果APIMap不存在相应的api
         if(empty($this->APIMap[$name])){
-            $this->error->showError("api调用名称错误","不存在的API: <span style='color:red;'>$name</span>");
+            throw new Exception('不存在的API'.$name, 400, 'API_NOT_FIND');
         }
 
         //从APIMap获取api相应参数
@@ -272,18 +261,6 @@ class QC extends Oauth{
             $arr[$k] = $this->objToArr($v);
         }
         return $arr;
-    }
-
-   
-    /**
-     * get_access_token
-     * 获得access_token
-     * @param void
-     * @since 5.0
-     * @return string 返加access_token
-     */
-    public function get_access_token(){
-        return $this->recorder->read("access_token");
     }
 
     //简单实现json到php数组转换功能

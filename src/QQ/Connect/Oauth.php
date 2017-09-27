@@ -12,53 +12,59 @@ class Oauth{
     const GET_AUTH_CODE_URL = "https://graph.qq.com/oauth2.0/authorize";
     const GET_ACCESS_TOKEN_URL = "https://graph.qq.com/oauth2.0/token";
     const GET_OPENID_URL = "https://graph.qq.com/oauth2.0/me";
-
-    protected $recorder;
+    
     public $urlUtils;
     protected $error;
+    // ====
+    protected $appid;
+    protected $callback;
+    protected $scope;
+    protected $appkey;
+    protected $access_token;
+    protected $openid;
     
 
     function __construct(){
-        $this->recorder = new Recorder();
         $this->urlUtils = new URL();
         $this->error = new ErrorCase();
     }
 
-    public function qq_login(){
-        $appid = $this->recorder->readInc("appid");
-        $callback = $this->recorder->readInc("callback");
-        $scope = $this->recorder->readInc("scope");
-
-        //-------生成唯一随机串防CSRF攻击
-        $state = md5(uniqid(rand(), TRUE));
-        $this->recorder->write('state',$state);
-
+    public function setAppId($appid){
+        $this->appid = $appid;
+    }
+    public function setScope($scope){
+        $this->scope = $scope;
+    }
+    public function setOpenid($openid){
+        $this->openid = $openid;
+    }
+    public function setAccessToken($access_token){
+        $this->access_token = $access_token;
+    }
+    public function setCallbackUrl($callback){
+        $this->callback = $callback;
+    }
+    public function qq_login($scope, $callback = null, $appid = null){
         //-------构造请求参数列表
         $keysArr = array(
             "response_type" => "code",
-            "client_id" => $appid,
-            "redirect_uri" => $callback,
+            "client_id" => empty($appid) ? $this->appid : $appid,
+            "redirect_uri" => empty($callback) ? $this->callback : $callback,
+            "scope" => empty($scope) ? $this->scope : $scope,
             "state" => $state,
-            "scope" => $scope
         );
 
         return $this->urlUtils->combineURL(self::GET_AUTH_CODE_URL, $keysArr);
     }
 
-    public function qq_callback(){
-        $state = $this->recorder->read("state");
-
-        //--------验证state防止CSRF攻击
-        if($_GET['state'] != $state){
-            $this->error->showError("30001");
-        }
+    public function qq_callback($callback = null, $appid = null, $appkey = null){
 
         //-------请求参数列表
         $keysArr = array(
             "grant_type" => "authorization_code",
-            "client_id" => $this->recorder->readInc("appid"),
-            "redirect_uri" => urlencode($this->recorder->readInc("callback")),
-            "client_secret" => $this->recorder->readInc("appkey"),
+            "client_id" => empty($appid) ? $this->appid : $appid,
+            "redirect_uri" => urlencode(empty($callback) ? $this->callback : $callback),
+            "client_secret" => empty($appkey) ? $this->appkey : $appkey,
             "code" => $_GET['code']
         );
 
@@ -81,16 +87,17 @@ class Oauth{
         $params = array();
         parse_str($response, $params);
 
-        $this->recorder->write("access_token", $params["access_token"]);
+        $this->access_token = $params["access_token"];
+
         return $params["access_token"];
 
     }
 
-    public function get_openid(){
+    public function get_openid($access_token = null){
 
         //-------请求参数列表
         $keysArr = array(
-            "access_token" => $this->recorder->read("access_token")
+            "access_token" => empty($access_token) ? $this->access_token : $access_token
         );
 
         $graph_url = $this->urlUtils->combineURL(self::GET_OPENID_URL, $keysArr);
@@ -108,9 +115,8 @@ class Oauth{
         if(isset($user->error)){
             $this->error->showError($user->error, $user->error_description);
         }
+        $this->openid = $user->openid;
 
-        //------记录openid
-        $this->recorder->write("openid", $user->openid);
         return $user->openid;
 
     }
