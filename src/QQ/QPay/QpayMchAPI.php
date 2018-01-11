@@ -23,16 +23,13 @@ class QpayMchAPI{
      * QQ钱包商户平台(http://qpay.qq.com/)获取
      */
     protected $mchKey = '';
-
-    public function  setMchId($mchId){
-        $this->mchId = $mchId;
-    }
-    public function setSubMchId($subMchId){
-        $this->subMchId = $subMchId;
-    }
-    public function setMchKey($mchKey){
-        $this->mchKey = $mchKey;
-    }
+    /**
+     * API证书绝对路径。
+     * 请将证书放在非web虚拟目录下，防止被下载。
+     * QQ钱包商户平台(http://qpay.qq.com/)获取
+     */
+    protected $certFilePath = '';
+    protected $keyFilePath = '';
     /**
      * QpayMchAPI constructor.
      *
@@ -44,6 +41,22 @@ class QpayMchAPI{
         $this->url = $url;
         $this->isSSL = $isSSL;
         $this->timeout = $timeout;
+    }
+
+    public function  setMchId($mchId){
+        $this->mchId = $mchId;
+    }
+    public function setSubMchId($subMchId){
+        $this->subMchId = $subMchId;
+    }
+    public function setMchKey($mchKey){
+        $this->mchKey = $mchKey;
+    }
+    public function setCertFilePath($certFilePath){
+        $this->certFilePath = $certFilePath;
+    }
+    public function setKeyFilePath($keyFilePath){
+        $this->keyFilePath = $keyFilePath;
     }
 
     public function reqQpay($params){
@@ -58,7 +71,7 @@ class QpayMchAPI{
         $xml = QpayMchUtil::arrayToXml($params);
 
         if(isset($this->isSSL)){
-            $ret =  QpayMchUtil::reqByCurlSSLPost($xml, $this->url, $this->timeout);
+            $ret =  QpayMchUtil::reqByCurlSSLPost($xml, $this->url, $this->timeout, $this->sslCertPath, $this->sslKeyPath);
         }else{
             $ret =  QpayMchUtil::reqByCurlNormalPost($xml, $this->url, $this->timeout);
         }

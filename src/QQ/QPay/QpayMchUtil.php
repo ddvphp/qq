@@ -104,7 +104,7 @@ class QpayMchUtil {
      * @return bool|mixed
      */
     public static function reqByCurlNormalPost($params, $url, $timeout = 10) {
-        return QpayMchUtil::_reqByCurl($params, $url, $timeout, false);
+        return QpayMchUtil::_reqByCurl($params, $url, $timeout);
     }
 
     /**
@@ -115,11 +115,11 @@ class QpayMchUtil {
      *
      * @return bool|mixed
      */
-    public static function reqByCurlSSLPost($params, $url, $timeout = 10) {
-        return QpayMchUtil::_reqByCurl($params, $url, $timeout, true);
+    public static function reqByCurlSSLPost($params, $url, $timeout = 10, $sslCertPath = null, $sslKeyPath = null) {
+        return QpayMchUtil::_reqByCurl($params, $url, $timeout, $sslCertPath, $sslKeyPath);
     }
 
-    private static function _reqByCurl($params, $url, $timeout = 10, $needSSL = false) {
+    private static function _reqByCurl($params, $url, $timeout = 10, $sslCertPath = null, $sslKeyPath = null) {
         $ch = curl_init();
 
         curl_setopt($ch,CURLOPT_URL, $url);
@@ -131,11 +131,11 @@ class QpayMchUtil {
         curl_setopt($ch,CURLOPT_HEADER,FALSE);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,TRUE);
         //是否使用ssl证书
-        if(isset($needSSL) && $needSSL != false){
+        if($sslCertPath&&$sslKeyPath){
             curl_setopt($ch,CURLOPT_SSLCERTTYPE,'PEM');
-            curl_setopt($ch,CURLOPT_SSLCERT, QPayConf_pub::SSLCERT_PATH);
+            curl_setopt($ch,CURLOPT_SSLCERT, $sslCertPath);
             curl_setopt($ch,CURLOPT_SSLKEYTYPE,'PEM');
-            curl_setopt($ch,CURLOPT_SSLKEY, QPayConf_pub::SSLKEY_PATH);
+            curl_setopt($ch,CURLOPT_SSLKEY, $sslKeyPath);
         }
         curl_setopt($ch,CURLOPT_POST, true);
         curl_setopt($ch,CURLOPT_POSTFIELDS, $params);
