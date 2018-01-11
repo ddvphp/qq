@@ -43,6 +43,15 @@ class QpayMchAPI{
         $this->timeout = $timeout;
     }
 
+    public function setUrl($url){
+        $this->url = $url;
+    }
+    public function setIsSSL($isSSL){
+        $this->isSSL = $isSSL;
+    }
+    public function setTimeout($timeout){
+        $this->timeout = $timeout;
+    }
     public function setMchId($mchId){
         $this->mchId = $mchId;
     }
