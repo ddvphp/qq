@@ -13,23 +13,21 @@ class QPay extends \DdvPhp\QQ\QPay\QpayMchAPI
   	if (!is_array($config)) {
   		return;
   	}
-  	if (!empty($config['appid'])) {
-  		$this->setAppId($config['appid']);
+  	if (!empty($config['mchId'])) {
+  		$this->setMchId($config['mchId']);
   	}
-  	if (!empty($config['appkey'])) {
-  		$this->setAppKey($config['appkey']);
+  	if (!empty($config['subMchId'])) {
+  		$this->setSubMchId($config['subMchId']);
   	}
-  	if (!empty($config['scope'])) {
-  		$this->setScope($config['scope']);
+  	if (!empty($config['mchKey'])) {
+  		$this->setMchKey($config['mchKey']);
   	}
-  	if (!empty($config['openid'])) {
-  		$this->setOpenid($config['openid']);
+  	if (!empty($config['certFilePath'])) {
+  		$this->setCertFilePath($config['certFilePath']);
   	}
-  	if (!empty($config['callback'])) {
-  		$this->setCallbackUrl($config['callback']);
-  	}
-  	if (!empty($config['access_token'])) {
-  		$this->setAccessToken($config['access_token']);
+  	if (!empty($config['keyFilePath'])) {
+  		$this->setKeyFilePath($config['keyFilePath']);
   	}
   }
+
 }

@@ -43,7 +43,7 @@ class QpayMchAPI{
         $this->timeout = $timeout;
     }
 
-    public function  setMchId($mchId){
+    public function setMchId($mchId){
         $this->mchId = $mchId;
     }
     public function setSubMchId($subMchId){
