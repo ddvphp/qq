@@ -1,5 +1,5 @@
 <?php
-namespace DdvPhp\QQ\Connect;
+namespace DdvPhp\QQ\QPay;
 
 class Exception extends \DdvPhp\QQ\Exception
 {
