@@ -121,7 +121,6 @@ class QpayMchUtil {
 
     private static function _reqByCurl($params, $url, $timeout = 10, $sslCertPath = null, $sslKeyPath = null) {
         $ch = curl_init();
-
         curl_setopt($ch,CURLOPT_URL, $url);
         curl_setopt($ch,CURLOPT_TIMEOUT, $timeout);
 
@@ -145,9 +144,9 @@ class QpayMchUtil {
             //log($ret); //业务记录交互流水。注：流水日志影响性能，如请求量过大，请慎重设计日志。
             return $ret;
         }
-        else {
+    else {
             $error = curl_errno($ch);
-            //log($error); //业务记录错误日志
+//            log($error); //业务记录错误日志
             print_r($error);
             curl_close($ch);
             return false;

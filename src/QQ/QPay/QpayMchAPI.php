@@ -7,9 +7,9 @@ namespace DdvPhp\QQ\QPay;
  * User: Tencent.com
  */
 class QpayMchAPI{
-    protected $url;
-    protected $isSSL;
-    protected $timeout;
+    protected $url='';
+    protected $isSSL=null;
+    protected $timeout =5;
     /**
      * QQ钱包商户号
      */
@@ -78,9 +78,8 @@ class QpayMchAPI{
         $params["sign"] = QpayMchUtil::getSign($params, $this->mchKey);
         //生成xml
         $xml = QpayMchUtil::arrayToXml($params);
-
         if(isset($this->isSSL)){
-            $ret =  QpayMchUtil::reqByCurlSSLPost($xml, $this->url, $this->timeout, $this->sslCertPath, $this->sslKeyPath);
+            $ret =  QpayMchUtil::reqByCurlSSLPost($xml, $this->url, $this->timeout, $this->certFilePath, $this->keyFilePath);
         }else{
             $ret =  QpayMchUtil::reqByCurlNormalPost($xml, $this->url, $this->timeout);
         }
