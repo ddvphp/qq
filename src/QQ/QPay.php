@@ -97,36 +97,36 @@ class QPay extends \DdvPhp\QQ\QPay\QpayMchAPI
       $params["total_fee"] = "1";
       $params["trade_type"] = "MICROPAY";
       $params["auth_code"] = "910728310408849937";*/
-      if (empty($params["out_trade_no"])){
-          throw new Exception('商户订单号参数不能缺少' ,'OUT_TRADE_NO_MUST_INPUT');
-      }
-      if (empty($params["fee_type"])){
-          throw new Exception('货币类型不能缺少' ,'FEE_TYPE');
-      }
-      if (empty($params["total_fee"])){
-          throw new Exception('订单金额不能缺少' ,'TOTAL_FEE');
-      }
-      if (empty($params["spbill_create_ip"])){
-          throw new Exception('终端IP不能缺少' ,'SPBILL_CREATE_IP');
-      }
-      if (empty($params["device_info"])){
-          throw new Exception('设备号不能缺少' ,'DEVICE_INFO');
-      }
-      if (empty($params["auth_code"])){
-          throw new Exception('付款码不能缺少' ,'AUTH_CODE');
-      }
+//      if (empty($params["out_trade_no"])){
+//          throw new Exception('商户订单号参数不能缺少' ,'OUT_TRADE_NO_MUST_INPUT');
+//      }
+//      if (empty($params["fee_type"])){
+//          throw new Exception('货币类型不能缺少' ,'FEE_TYPE');
+//      }
+//      if (empty($params["total_fee"])){
+//          throw new Exception('订单金额不能缺少' ,'TOTAL_FEE');
+//      }
+//      if (empty($params["spbill_create_ip"])){
+//          throw new Exception('终端IP不能缺少' ,'SPBILL_CREATE_IP');
+//      }
+//      if (empty($params["device_info"])){
+//          throw new Exception('设备号不能缺少' ,'DEVICE_INFO');
+//      }
+//      if (empty($params["auth_code"])){
+//          throw new Exception('付款码不能缺少' ,'AUTH_CODE');
+//      }
 /*      if (empty($params["sub_mch_id"])){
           throw new Exception('' ,'SUB_MCH_ID');
       }*/
 /*      if (empty($params["notify_url"])){
           throw new Exception('' ,'NOTIFY_URL');
       }*/
-      if (empty($params["body"])){
-          throw new Exception('商品描述' ,'BODY');
-      }
-      if (empty($params["trade_type"])){
-          throw new Exception('支付场景不能缺少' ,'TRADE_TYPE');
-      }
+//      if (empty($params["body"])){
+//          throw new Exception('商品描述' ,'BODY');
+//      }
+//      if (empty($params["trade_type"])){
+//          throw new Exception('支付场景不能缺少' ,'TRADE_TYPE');
+//      }
     //api调用
       $qpayApi = new QpayMchAPI('https://qpay.qq.com/cgi-bin/pay/qpay_micro_pay.cgi', null, 10);
       $qpayApi->setMchId($params['mchId']);
